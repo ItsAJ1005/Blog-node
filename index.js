@@ -1,8 +1,10 @@
 const path = require("path");
 const express = require("express");
 const { connectDB } = require('./config/connection');
+const cookieParser = require('cookie-parser')
 const userRoute = require('./routes/user');
 const dotenv =require('dotenv');
+const checkAuthCookie = require("./middlewares/authentication");
 
 const app = express();
 
@@ -16,6 +18,8 @@ app.set("views", path.resolve("./views"));
 
 app.use(express.urlencoded({extended: false}));
 app.use('/user', userRoute);
+app.use(cookieParser);
+app.use(checkAuthCookie(token));
 
 
 app.get('/', (req, res) => {

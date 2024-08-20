@@ -30,7 +30,7 @@ router.post('/signin', async(req, res)=>{
         console.log("Token: ", token);
         return res.cookie('token', token).redirect('/');
     } catch(error){
-        return res.render('login', {
+        return res.render('signin', {
             error: "Incorrect password"
         });
     }
