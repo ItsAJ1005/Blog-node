@@ -9,15 +9,31 @@
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="#">Home</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Add Blog</a>
-          </li>
-          <li class="nav-item dropdown">
+
+          <!-- if logged in -->
+          <% if (locals.user) { %>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Add Blog</a>
+            </li>
             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               AJ Harsh
             </a>
+          <% } else { %>
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="/user/signup">Create account</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="/user/signin">Signin</a>
+            </li>
+            <% } %>
+           
+
+          
+            
+          <li class="nav-item dropdown">
+
             <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="#">Logout</a></li>
+              <li><a class="dropdown-item" href="/user/logout">Logout</a></li>
             </ul>
           </li>
         </ul>
