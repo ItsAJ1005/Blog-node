@@ -24,10 +24,16 @@ router.post('/signup', async(req, res) => {
 
 router.post('/signin', async(req, res)=>{
     const { email, password } = req.body;
-    const user = await User.matchPassword(email, password);
+    try{
+        const token = await User.matchPasswordAndGenerateToken(email, password);
 
-    console.log("User: ", user);
-    return res.redirect('/');
+        console.log("Token: ", token);
+        return res.cookie('token', token).redirect('/');
+    } catch(error){
+        return res.render('login', {
+            error: "Incorrect password"
+        });
+    }
 
 })
 
