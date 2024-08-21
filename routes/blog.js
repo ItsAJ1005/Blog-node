@@ -32,6 +32,13 @@ const upload = multer({ storage: storage });
 
 router.post("/add-new", upload.single("coverImage"),async (req, res) => {
     const { title, body } = req.body;
+
+    if (!title || !body) {
+      return res.render('addBlog', {
+          
+          error: "Add title and body :)"
+      });
+  }
     const blog = await Blog.create({
         title, 
         body, 
