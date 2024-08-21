@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const multer = require("multer");
 const path = require("path");
+const { User } = require('../models/user');
 const { Blog } = require("../models/blog");
 
 router.get("/add-new", (req, res) => {
@@ -10,13 +11,35 @@ router.get("/add-new", (req, res) => {
   });
 });
 
-router.get('/:id', async(req, res)=> {
-  const blog = await Blog.findById(req.params.id);
-  return res.render('blog', {
-    user: req.user,
-    blog
-  })
-})
+router.get('/:id', async (req, res) => {
+  try {
+    const blog = await Blog.findById(req.params.id);
+
+    if (!blog) {
+      return res.status(404).send('Blog not found');
+    }
+
+    // console.log(blog.createdBy);
+
+    const userId = blog.createdBy; 
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).send('User not found');
+    }
+
+    // console.log(user);
+
+    return res.render('blog', {
+      user,
+      blog
+    });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).send('Server error');
+  }
+});
+
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {

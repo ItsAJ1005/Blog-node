@@ -24,6 +24,7 @@ router.post('/signup', async (req, res) => {
             error: "Invalid email address. It must contain '@'."
         });
     }
+
     try {
         
         const existingUser = await User.findOne({ email });
@@ -39,7 +40,7 @@ router.post('/signup', async (req, res) => {
             password 
         });
 
-        return res.redirect('/signin'); 
+        return res.redirect('/'); 
     } catch (error) {
         console.error("Error during signup:", error);
         return res.render('signup', {
