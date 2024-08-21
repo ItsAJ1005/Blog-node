@@ -17,6 +17,32 @@
         <p><b><i> Written by: <%= user.fullName %> </i></b></p>
     </div>
 
+    <div class="container mt-3">
+        <h2 class="mt-5">Comments</h2>
+        <sm><%= comments.length %> people commented on this blog.</sm>
+
+        <% if (locals.user) { %>
+            <form class="container mt-4" action="/blog/comment/<%= blog._id %>" method="POST">
+                <div class="mb-3">
+    
+                  <textarea type="text" name="content" class="form-control" id="exampleInputEmail1" placeholder="Enter your comment..." aria-describedby="emailHelp">
+                    </textarea>
+                </div>
+        
+                <button type="submit" class="btn btn-success">Comment</button>
+              </form>
+        <% } %>
+        
+    </div>
+
+    <div class="container mt-3">
+        <% comments.forEach(comment => { %>
+            <div class="mb-3">
+                <p><i><strong><%= comment.createdBy.fullName %></i> commented:</strong></p>
+                <p><%= comment.content %></p>
+            </div>
+        <% }) %>
+    </div>
     <%- include("./partials/script") %>
 </body>
 </html>

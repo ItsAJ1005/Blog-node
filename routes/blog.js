@@ -4,6 +4,7 @@ const multer = require("multer");
 const path = require("path");
 const { User } = require('../models/user');
 const { Blog } = require("../models/blog");
+const Comment = require("../models/comment");
 
 router.get("/add-new", (req, res) => {
   return res.render("addBlog", {
@@ -14,6 +15,7 @@ router.get("/add-new", (req, res) => {
 router.get('/:id', async (req, res) => {
   try {
     const blog = await Blog.findById(req.params.id);
+    const comments = await Comment.find({ blogId: req.params.id }).populate("createdBy");
 
     if (!blog) {
       return res.status(404).send('Blog not found');
@@ -32,7 +34,8 @@ router.get('/:id', async (req, res) => {
 
     return res.render('blog', {
       user,
-      blog
+      blog,
+      comments
     });
   } catch (err) {
     console.error(err);
@@ -69,6 +72,17 @@ router.post("/add-new", upload.single("coverImage"),async (req, res) => {
         coverImageUrl: `/uploads/${req.file.filename}`
     })
   return res.redirect(`/blog/${blog._id}`);
+});
+
+router.post('/comment/:blogId', async (req, res) => {
+    if(!req.user) return console.log("no user!");
+    await Comment.create({
+    content: req.body.content,
+    blogId: req.params.blogId,
+    createdBy: req.user._id
+  });
+
+  return res.redirect(`/blog/${req.params.blogId}`);
 });
 
 module.exports = router;
