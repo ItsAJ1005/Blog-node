@@ -1,8 +1,8 @@
+const dotenv = require('dotenv');
 const path = require("path");
 const express = require("express");
 const { connectDB } = require('./config/connection');
 const cookieParser = require('cookie-parser');
-const dotenv = require('dotenv');
 const checkAuthCookie = require("./middlewares/authentication");
 // const helmet = require('helmet');
 // const cors = require('cors');
@@ -14,10 +14,10 @@ const { Blog } = require("./models/blog");
 
 const app = express();
 
-const PORT = process.env.PORT || 8000; // Use environment variable if defined
+const PORT = process.env.PORT || 8000;  
 
 dotenv.config();
-connectDB(process.env.mongoUrl);
+connectDB(process.env.MONGO_URL);
 
 app.set("view engine", "ejs");
 app.set("views", path.resolve("./views"));
